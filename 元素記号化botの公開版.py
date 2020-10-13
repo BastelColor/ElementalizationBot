@@ -1,4 +1,4 @@
-﻿"""
+"""
 Created by Bastelcolor
 
 置き換えが必要な場所は
@@ -129,22 +129,28 @@ while(i<4):
 					raw_screen_name=str(status.author.screen_name.encode("UTF-8"))
 					screen_name=str(raw_screen_name[2:-1])
 					print(screen_name + "さんは元素化してほしいわけじゃないみたい・・・")
+#再度送信停止のためのログ作成
+					replylog = replylog[:-1] +status.text +  "' ]"
+					tweetlog = open("[ログファイルのある場所までのパス]\\log.txt", "w" ,encoding = "utf_8")
+					tweetlog.write(replylog)
+					tweetlog.close()
+					print("ログをほぞんしたよ！")
+#そもそも元素化じゃなかった場合のリプライ送信
 					status_id=status.id
 					raw_screen_name=str(status.author.screen_name.encode("UTF-8"))
 					screen_name=str(raw_screen_name[2:-1])
 					reply_text="@" + screen_name + " 元素化 + 変換してほしい英語名\nでリプライを送ってね！"
 					api.update_status(status=reply_text,in_reply_to_status_id=status_id)
-				tweetlog.close()
-#再度送信停止のためのログ作成
+#レートが早すぎるエラーが発生した時の処理
 	except tweepy.TweepError as e:
 		if e.reason == "[{'message': 'Rate limit exceeded', 'code': 88}]":
 			print(str(e)+" ってエラーが発生したからちょっときゅうけーい！\n")
 			time.sleep(60 * 15)
 	else:
-		print("処理しゅーりょー！\n")
-	time.sleep(30)
-	print("再処理にはいるよ！")
-
+		#print("処理しゅーりょー！\n")
+		error = 0
+	time.sleep(60)
+	#print("再処理にはいるよ！")
 	
 	
 #ツイート部分コピペ
